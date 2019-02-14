@@ -33,6 +33,48 @@ for (let c = 0; c < brickColumnCount; c++) {
 
 let score = 0
 
+document.addEventListener('keydown', keyDownHandler, false)
+document.addEventListener('keyup', keyUpHandler, false)
+
+function keyDownHandler(e) {
+  if (e.keyCode == 39) {
+    rightPressed = true
+  }
+  else if (e.keyCode == 37) {
+    leftPressed = true
+  }
+}
+
+function keyUpHandler(e) {
+  if (e.keyCode == 39) {
+    rightPressed = false
+  }
+  else if (e.keyCode == 37) {
+    leftPressed = false
+  }
+}
+
+function collisionDetection() {
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      const b = bricks[c][r]
+      if (b.status == 1) {
+        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+          dy = -dy
+          b.status = 0
+          score++
+          if (score == brickRowCount * brickColumnCount) {
+            alert('YOU WIN, CONGRATS!')
+            document.location.reload()
+            clearInterval(interval)
+          }
+        }
+      }
+    }
+  }
+}
+
+
 function drawBall() {
   ctx.beginPath()
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2)
@@ -67,6 +109,12 @@ function drawBricks() {
   }
 }
 
+function drawScore() {
+  ctx.font = '16px Arial'
+  ctx.fillStyle = '#0095DD'
+  ctx.fillText('Score: ' + score, 8, 20)
+}
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   drawBricks()
@@ -88,6 +136,7 @@ function draw() {
     else {
       alert('GAME OVER')
       document.location.reload()
+      clearInterval(interval)
     }
   }
 
@@ -102,45 +151,4 @@ function draw() {
   y += dy
 }
 
-document.addEventListener('keydown', keyDownHandler, false)
-document.addEventListener('keyup', keyUpHandler, false)
-
-function keyDownHandler(e) {
-  if (e.keyCode == 39) {
-    rightPressed = true
-  }
-  else if (e.keyCode == 37) {
-    leftPressed = true
-  }
-}
-
-function keyUpHandler(e) {
-  if (e.keyCode == 39) {
-    rightPressed = false
-  }
-  else if (e.keyCode == 37) {
-    leftPressed = false
-  }
-}
-
-function collisionDetection() {
-  for (let c = 0; c < brickColumnCount; c++) {
-    for (let r = 0; r < brickRowCount; r++) {
-      const b = bricks[c][r]
-      if (b.status == 1) {
-        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
-          dy = -dy
-          b.status = 0
-          score++
-        }
-      }
-    }
-  }
-}
-
-function drawScore() {
-  ctx.font = '16px Arial'
-  ctx.fillStyle = '#0095DD'
-  ctx.fillText('Score: ' + score, 8, 20)
-}
-setInterval(draw, 10)
+const interval = setInterval(draw, 10)
