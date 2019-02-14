@@ -121,6 +121,7 @@ function draw() {
     else {
       alert('GAME OVER')
       document.location.reload()
+      clearInterval(interval)
     }
   }
 
@@ -135,4 +136,4 @@ function draw() {
   y += dy
 }
 
-setInterval(draw, 10)
+const interval = setInterval(draw, 10)
