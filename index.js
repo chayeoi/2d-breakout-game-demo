@@ -104,6 +104,7 @@ function draw() {
 
 document.addEventListener('keydown', keyDownHandler, false)
 document.addEventListener('keyup', keyUpHandler, false)
+document.addEventListener('mousemove', mouseMoveHandler, false)
 
 function keyDownHandler(e) {
   if (e.keyCode == 39) {
@@ -120,6 +121,16 @@ function keyUpHandler(e) {
   }
   else if (e.keyCode == 37) {
     leftPressed = false
+  }
+}
+
+function mouseMoveHandler(e) {
+  var relativeX = e.clientX - canvas.offsetLeft
+  console.log('clientX', e.clientX)
+  console.log('offsetLeft', canvas.offsetLeft)
+  console.log('offsetParent', canvas.offsetParent)
+  if (relativeX > 0 && relativeX < canvas.width) {
+    paddleX = relativeX - paddleWidth / 2
   }
 }
 
@@ -143,4 +154,5 @@ function drawScore() {
   ctx.fillStyle = '#0095DD'
   ctx.fillText('Score: ' + score, 8, 20)
 }
+
 setInterval(draw, 10)
