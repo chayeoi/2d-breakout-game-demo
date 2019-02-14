@@ -31,6 +31,42 @@ for (let c = 0; c < brickColumnCount; c++) {
   }
 }
 
+
+document.addEventListener('keydown', keyDownHandler, false)
+document.addEventListener('keyup', keyUpHandler, false)
+
+function keyDownHandler(e) {
+  if (e.keyCode == 39) {
+    rightPressed = true
+  }
+  else if (e.keyCode == 37) {
+    leftPressed = true
+  }
+}
+
+function keyUpHandler(e) {
+  if (e.keyCode == 39) {
+    rightPressed = false
+  }
+  else if (e.keyCode == 37) {
+    leftPressed = false
+  }
+}
+
+function collisionDetection() {
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      const b = bricks[c][r]
+      if (b.status == 1) {
+        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+          dy = -dy
+          b.status = 0
+        }
+      }
+    }
+  }
+}
+
 function drawBall() {
   ctx.beginPath()
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2)
@@ -97,41 +133,6 @@ function draw() {
 
   x += dx
   y += dy
-}
-
-document.addEventListener('keydown', keyDownHandler, false)
-document.addEventListener('keyup', keyUpHandler, false)
-
-function keyDownHandler(e) {
-  if (e.keyCode == 39) {
-    rightPressed = true
-  }
-  else if (e.keyCode == 37) {
-    leftPressed = true
-  }
-}
-
-function keyUpHandler(e) {
-  if (e.keyCode == 39) {
-    rightPressed = false
-  }
-  else if (e.keyCode == 37) {
-    leftPressed = false
-  }
-}
-
-function collisionDetection() {
-  for (let c = 0; c < brickColumnCount; c++) {
-    for (let r = 0; r < brickRowCount; r++) {
-      const b = bricks[c][r]
-      if (b.status == 1) {
-        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
-          dy = -dy
-          b.status = 0
-        }
-      }
-    }
-  }
 }
 
 setInterval(draw, 10)
