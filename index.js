@@ -31,6 +31,8 @@ for (let c = 0; c < brickColumnCount; c++) {
   }
 }
 
+let score = 0
+
 function drawBall() {
   ctx.beginPath()
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2)
@@ -70,6 +72,7 @@ function draw() {
   drawBricks()
   drawBall()
   drawPaddle()
+  drawScore()
   collisionDetection()
 
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -128,10 +131,16 @@ function collisionDetection() {
         if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
           dy = -dy
           b.status = 0
+          score++
         }
       }
     }
   }
 }
 
+function drawScore() {
+  ctx.font = '16px Arial'
+  ctx.fillStyle = '#0095DD'
+  ctx.fillText('Score: ' + score, 8, 20)
+}
 setInterval(draw, 10)
